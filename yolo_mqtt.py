@@ -3,6 +3,11 @@ import paho.mqtt.client as mqtt
 import cv2
 from datetime import datetime
 import requests
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 
 allow=False
@@ -30,10 +35,13 @@ def on_message(client, userdata, msg):
     print(f"📡 {msg.topic}: {msg.payload.decode()}")
     if msg.payload.decode()=='Motion Detected!':
         print("camera")
-        # Configuration
-        # Update with your YOLO model path
-        API_key = "AIzaSyBs-aw-lP7CrxAcmK33UX1v3tfCylMAdyk"  # Replace with actual API key
-        Model_Path="/home/rebbouh/Desktop/yolo/yolov8n-face.pt"
+        # Configuration - Load from environment variables
+        API_key = os.getenv("GOOGLE_API_KEY")
+        Model_Path = os.getenv("MODEL_PATH", "/home/rebbouh/Desktop/yolo/yolov8n-face.pt")
+
+        if not API_key:
+            print("❌ Error: GOOGLE_API_KEY not found in environment variables")
+            return
         # Step 1: Detect faces
         result = detect_faces(Model_Path, API_key)
         

@@ -10,9 +10,13 @@ import csv
 from datetime import datetime
 import time
 import requests
-# Gemini API configuration
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+# Configuration
 Gemini_model = "gemini-2.0-flash"
-Model_Path="/home/rebbouh/Desktop/yolo/yolov8n-face.pt"
+Model_Path = os.getenv("MODEL_PATH", "/home/rebbouh/Desktop/yolo/yolov8n-face.pt")
 def log_event_with_gemini(image_path, API_key):
     """Generate a detailed description of an image using the Gemini API."""
     genai.configure(api_key=API_key)
